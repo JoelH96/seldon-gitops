@@ -13,8 +13,11 @@
                 "name": "default",
                 "graph": {
                     "name": "incomeclassifier2-default",
+                    "type": "UNKNOWN_TYPE",
                     "implementation": "SKLEARN_SERVER",
                     "endpoint": {
+                        "service_host": "localhost",
+                        "service_port": 9000,
                         "type": "REST"
                     },
                     "modelUri": "gs://seldon-models/sklearn/income/model"
@@ -28,6 +31,61 @@
                             "containers": [
                                 {
                                     "name": "incomeclassifier2-default",
+                                    "image": "seldonio/sklearnserver_rest:0.2",
+                                    "resources": {
+                                        "limits": {
+                                            "cpu": "1",
+                                            "memory": "1Gi"
+                                        },
+                                        "requests": {
+                                            "cpu": "1",
+                                            "memory": "1Gi"
+                                        }
+                                    },
+                                    "volumeMounts": [
+                                        {
+                                            "name": "podinfo",
+                                            "mountPath": "/etc/podinfo"
+                                        }
+                                    ]
+                                }
+                            ]
+                        }
+                    }
+                ],
+                "replicas": 1,
+                "engineResources": {},
+                "labels": {
+                    "version": "default"
+                },
+                "svcOrchSpec": {},
+                "traffic": 90,
+                "explainer": {
+                    "containerSpec": {
+                        "name": "",
+                        "resources": {}
+                    }
+                }
+            },
+            {
+                "name": "canary",
+                "graph": {
+                    "name": "incomeclassifier2-canary",
+                    "implementation": "SKLEARN_SERVER",
+                    "endpoint": {
+                        "type": "REST"
+                    },
+                    "modelUri": "gs://seldon-models/sklearn/income/model"
+                },
+                "componentSpecs": [
+                    {
+                        "metadata": {
+                            "creationTimestamp": "2020-01-13T13:51:07Z"
+                        },
+                        "spec": {
+                            "containers": [
+                                {
+                                    "name": "incomeclassifier2-canary",
                                     "resources": {
                                         "limits": {
                                             "cpu": "1",
@@ -46,7 +104,7 @@
                 "replicas": 1,
                 "engineResources": {},
                 "svcOrchSpec": {},
-                "traffic": 100,
+                "traffic": 10,
                 "explainer": {
                     "containerSpec": {
                         "name": "",
