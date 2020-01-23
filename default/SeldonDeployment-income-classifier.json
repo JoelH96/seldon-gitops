@@ -13,6 +13,57 @@
                 "name": "default",
                 "graph": {
                     "name": "income-classifier-default",
+                    "type": "UNKNOWN_TYPE",
+                    "implementation": "SKLEARN_SERVER",
+                    "endpoint": {
+                        "service_host": "localhost",
+                        "service_port": 9000,
+                        "type": "REST"
+                    },
+                    "modelUri": "gs://seldon-models/sklearn/income/model"
+                },
+                "componentSpecs": [
+                    {
+                        "metadata": {
+                            "creationTimestamp": "2020-01-15T13:26:31Z"
+                        },
+                        "spec": {
+                            "containers": [
+                                {
+                                    "name": "income-classifier-default",
+                                    "image": "seldonio/sklearnserver_rest:0.2",
+                                    "resources": {},
+                                    "volumeMounts": [
+                                        {
+                                            "name": "podinfo",
+                                            "mountPath": "/etc/podinfo"
+                                        }
+                                    ]
+                                }
+                            ]
+                        }
+                    }
+                ],
+                "replicas": 1,
+                "engineResources": {},
+                "labels": {
+                    "version": "default"
+                },
+                "svcOrchSpec": {},
+                "traffic": 90,
+                "explainer": {
+                    "type": "anchor_tabular",
+                    "modelUri": "gs://seldon-models/sklearn/income/explainer",
+                    "containerSpec": {
+                        "name": "",
+                        "resources": {}
+                    }
+                }
+            },
+            {
+                "name": "canary",
+                "graph": {
+                    "name": "income-classifier-canary",
                     "implementation": "SKLEARN_SERVER",
                     "endpoint": {
                         "type": "REST"
@@ -22,22 +73,13 @@
                 "componentSpecs": [
                     {
                         "metadata": {
-                            "creationTimestamp": "2020-01-22T17:48:55Z"
+                            "creationTimestamp": "2020-01-17T16:09:11Z"
                         },
                         "spec": {
                             "containers": [
                                 {
-                                    "name": "income-classifier-default",
-                                    "resources": {
-                                        "limits": {
-                                            "cpu": "1",
-                                            "memory": "1Gi"
-                                        },
-                                        "requests": {
-                                            "cpu": "1",
-                                            "memory": "1Gi"
-                                        }
-                                    }
+                                    "name": "income-classifier-canary",
+                                    "resources": {}
                                 }
                             ]
                         }
@@ -46,7 +88,7 @@
                 "replicas": 1,
                 "engineResources": {},
                 "svcOrchSpec": {},
-                "traffic": 100,
+                "traffic": 10,
                 "explainer": {
                     "containerSpec": {
                         "name": "",
