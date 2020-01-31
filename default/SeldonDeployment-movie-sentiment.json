@@ -4,7 +4,10 @@
     "metadata": {
         "name": "movie-sentiment",
         "namespace": "default",
-        "creationTimestamp": null
+        "creationTimestamp": null,
+        "labels": {
+            "app.kubernetes.io/instance": "seldon-gitops-default"
+        }
     },
     "spec": {
         "name": "movie-sentiment",
@@ -17,7 +20,7 @@
                     "implementation": "SKLEARN_SERVER",
                     "endpoint": {
                         "service_host": "localhost",
-                        "service_port": 9001,
+                        "service_port": 9000,
                         "type": "REST"
                     },
                     "modelUri": "gs://seldon-models/sklearn/moviesentiment"
@@ -41,7 +44,13 @@
                                             "cpu": "1",
                                             "memory": "1Gi"
                                         }
-                                    }
+                                    },
+                                    "volumeMounts": [
+                                        {
+                                            "name": "podinfo",
+                                            "mountPath": "/etc/podinfo"
+                                        }
+                                    ]
                                 }
                             ]
                         }
@@ -55,6 +64,7 @@
                 "svcOrchSpec": {},
                 "traffic": 100,
                 "explainer": {
+                    "type": "anchor_text",
                     "containerSpec": {
                         "name": "",
                         "resources": {}
