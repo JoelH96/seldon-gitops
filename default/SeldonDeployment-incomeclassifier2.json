@@ -4,7 +4,10 @@
     "metadata": {
         "name": "incomeclassifier2",
         "namespace": "default",
-        "creationTimestamp": null
+        "creationTimestamp": null,
+        "labels": {
+            "app.kubernetes.io/instance": "seldon-gitops-default"
+        }
     },
     "spec": {
         "name": "incomeclassifier2",
@@ -61,6 +64,8 @@
                 "svcOrchSpec": {},
                 "traffic": 95,
                 "explainer": {
+                    "type": "AnchorTabular",
+                    "modelUri": "gs://seldon-models/sklearn/income/model/explainer",
                     "containerSpec": {
                         "name": "",
                         "resources": {}
@@ -71,8 +76,11 @@
                 "name": "canary",
                 "graph": {
                     "name": "incomeclassifier2-canary",
+                    "type": "UNKNOWN_TYPE",
                     "implementation": "SKLEARN_SERVER",
                     "endpoint": {
+                        "service_host": "localhost",
+                        "service_port": 9001,
                         "type": "REST"
                     },
                     "modelUri": "gs://seldon-models/sklearn/income/model"
@@ -86,6 +94,7 @@
                             "containers": [
                                 {
                                     "name": "incomeclassifier2-canary",
+                                    "image": "seldonio/sklearnserver_rest:0.2",
                                     "resources": {
                                         "limits": {
                                             "cpu": "1",
@@ -95,7 +104,13 @@
                                             "cpu": "1",
                                             "memory": "1Gi"
                                         }
-                                    }
+                                    },
+                                    "volumeMounts": [
+                                        {
+                                            "name": "podinfo",
+                                            "mountPath": "/etc/podinfo"
+                                        }
+                                    ]
                                 }
                             ]
                         }
@@ -106,6 +121,9 @@
                     "seldon.io/canary": "true"
                 },
                 "engineResources": {},
+                "labels": {
+                    "version": "canary"
+                },
                 "svcOrchSpec": {},
                 "traffic": 5,
                 "explainer": {
