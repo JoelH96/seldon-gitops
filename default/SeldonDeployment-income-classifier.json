@@ -17,7 +17,7 @@
                     "implementation": "SKLEARN_SERVER",
                     "endpoint": {
                         "service_host": "localhost",
-                        "service_port": 9001,
+                        "service_port": 9000,
                         "type": "REST"
                     },
                     "modelUri": "gs://seldon-models/sklearn/income/model"
@@ -32,7 +32,13 @@
                                 {
                                     "name": "income-classifier-default",
                                     "image": "seldonio/sklearnserver_rest:0.2",
-                                    "resources": {}
+                                    "resources": {},
+                                    "volumeMounts": [
+                                        {
+                                            "name": "podinfo",
+                                            "mountPath": "/etc/podinfo"
+                                        }
+                                    ]
                                 }
                             ]
                         }
@@ -44,7 +50,46 @@
                     "version": "default"
                 },
                 "svcOrchSpec": {},
-                "traffic": 100,
+                "traffic": 70,
+                "explainer": {
+                    "containerSpec": {
+                        "name": "",
+                        "resources": {}
+                    }
+                }
+            },
+            {
+                "name": "canary",
+                "graph": {
+                    "name": "income-classifier-canary",
+                    "implementation": "SKLEARN_SERVER",
+                    "endpoint": {
+                        "type": "REST"
+                    },
+                    "modelUri": "gs://seldon-models/sklearn/income/model"
+                },
+                "componentSpecs": [
+                    {
+                        "metadata": {
+                            "creationTimestamp": "2020-02-04T08:35:50Z"
+                        },
+                        "spec": {
+                            "containers": [
+                                {
+                                    "name": "income-classifier-canary",
+                                    "resources": {}
+                                }
+                            ]
+                        }
+                    }
+                ],
+                "replicas": 1,
+                "annotations": {
+                    "seldon.io/canary": "true"
+                },
+                "engineResources": {},
+                "svcOrchSpec": {},
+                "traffic": 30,
                 "explainer": {
                     "containerSpec": {
                         "name": "",
