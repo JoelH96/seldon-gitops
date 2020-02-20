@@ -4,10 +4,7 @@
     "metadata": {
         "name": "income-classifier-demo",
         "namespace": "default",
-        "creationTimestamp": null,
-        "labels": {
-            "app.kubernetes.io/instance": "seldon-gitops-default"
-        }
+        "creationTimestamp": null
     },
     "spec": {
         "name": "income-classifier-demo",
@@ -53,7 +50,7 @@
                     "version": "default"
                 },
                 "svcOrchSpec": {},
-                "traffic": 90,
+                "traffic": 100,
                 "explainer": {
                     "type": "AnchorTabular",
                     "modelUri": "gs://seldon-models/sklearn/income/explainer",
@@ -66,67 +63,6 @@
                         "delta": "0.1",
                         "tau": "0.15",
                         "threshold": "0.95"
-                    }
-                }
-            },
-            {
-                "name": "canary",
-                "graph": {
-                    "name": "income-classifier-demo-canary",
-                    "type": "UNKNOWN_TYPE",
-                    "implementation": "SKLEARN_SERVER",
-                    "endpoint": {
-                        "service_host": "localhost",
-                        "service_port": 9001,
-                        "type": "REST"
-                    },
-                    "modelUri": "gs://seldon-models/sklearn/income/model"
-                },
-                "componentSpecs": [
-                    {
-                        "metadata": {
-                            "creationTimestamp": "2020-02-14T13:39:30Z"
-                        },
-                        "spec": {
-                            "containers": [
-                                {
-                                    "name": "income-classifier-demo-canary",
-                                    "image": "seldonio/sklearnserver_rest:0.2",
-                                    "resources": {
-                                        "limits": {
-                                            "cpu": "1",
-                                            "memory": "1Gi"
-                                        },
-                                        "requests": {
-                                            "cpu": "1",
-                                            "memory": "1Gi"
-                                        }
-                                    },
-                                    "volumeMounts": [
-                                        {
-                                            "name": "podinfo",
-                                            "mountPath": "/etc/podinfo"
-                                        }
-                                    ]
-                                }
-                            ]
-                        }
-                    }
-                ],
-                "replicas": 1,
-                "annotations": {
-                    "seldon.io/canary": "true"
-                },
-                "engineResources": {},
-                "labels": {
-                    "version": "canary"
-                },
-                "svcOrchSpec": {},
-                "traffic": 10,
-                "explainer": {
-                    "containerSpec": {
-                        "name": "",
-                        "resources": {}
                     }
                 }
             }
