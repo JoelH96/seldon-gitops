@@ -13,11 +13,8 @@
                 "name": "default",
                 "graph": {
                     "name": "incomeclassifier-default",
-                    "type": "UNKNOWN_TYPE",
                     "implementation": "SKLEARN_SERVER",
                     "endpoint": {
-                        "service_host": "localhost",
-                        "service_port": 9001,
                         "type": "REST"
                     },
                     "modelUri": "gs://seldon-models/sklearn/income/model"
@@ -25,13 +22,12 @@
                 "componentSpecs": [
                     {
                         "metadata": {
-                            "creationTimestamp": "2020-02-21T12:09:41Z"
+                            "creationTimestamp": "2020-02-26T17:31:54Z"
                         },
                         "spec": {
                             "containers": [
                                 {
                                     "name": "incomeclassifier-default",
-                                    "image": "seldonio/sklearnserver_rest:0.2",
                                     "resources": {
                                         "limits": {
                                             "cpu": "1",
@@ -49,9 +45,6 @@
                 ],
                 "replicas": 1,
                 "engineResources": {},
-                "labels": {
-                    "version": "default"
-                },
                 "svcOrchSpec": {},
                 "traffic": 100,
                 "explainer": {
