@@ -4,10 +4,7 @@
     "metadata": {
         "name": "incomeclassifier",
         "namespace": "default",
-        "creationTimestamp": null,
-        "labels": {
-            "app.kubernetes.io/instance": "seldon-gitops-default"
-        }
+        "creationTimestamp": null
     },
     "spec": {
         "name": "incomeclassifier",
@@ -62,7 +59,7 @@
                     "version": "default"
                 },
                 "svcOrchSpec": {},
-                "traffic": 100,
+                "traffic": 75,
                 "explainer": {
                     "type": "AnchorTabular",
                     "modelUri": "gs://seldon-models/sklearn/income/explainer",
@@ -75,6 +72,54 @@
                         "delta": "0.1",
                         "tau": "0.15",
                         "threshold": "0.95"
+                    }
+                }
+            },
+            {
+                "name": "canary",
+                "graph": {
+                    "name": "incomeclassifier-canary",
+                    "implementation": "SKLEARN_SERVER",
+                    "endpoint": {
+                        "type": "REST"
+                    },
+                    "modelUri": "gs://seldon-models/sklearn/income/model"
+                },
+                "componentSpecs": [
+                    {
+                        "metadata": {
+                            "creationTimestamp": "2020-03-04T17:26:04Z"
+                        },
+                        "spec": {
+                            "containers": [
+                                {
+                                    "name": "incomeclassifier-canary",
+                                    "resources": {
+                                        "limits": {
+                                            "cpu": "1",
+                                            "memory": "1Gi"
+                                        },
+                                        "requests": {
+                                            "cpu": "1",
+                                            "memory": "1Gi"
+                                        }
+                                    }
+                                }
+                            ]
+                        }
+                    }
+                ],
+                "replicas": 1,
+                "annotations": {
+                    "seldon.io/canary": "true"
+                },
+                "engineResources": {},
+                "svcOrchSpec": {},
+                "traffic": 25,
+                "explainer": {
+                    "containerSpec": {
+                        "name": "",
+                        "resources": {}
                     }
                 }
             }
