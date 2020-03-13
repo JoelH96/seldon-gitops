@@ -17,62 +17,7 @@
                     "implementation": "SKLEARN_SERVER",
                     "endpoint": {
                         "service_host": "localhost",
-                        "service_port": 9000,
-                        "type": "REST"
-                    },
-                    "modelUri": "gs://seldon-models/sklearn/income/model"
-                },
-                "componentSpecs": [
-                    {
-                        "metadata": {
-                            "creationTimestamp": "2020-03-13T14:31:24Z"
-                        },
-                        "spec": {
-                            "containers": [
-                                {
-                                    "name": "bestbuydemo-default",
-                                    "image": "seldonio/sklearnserver_rest:0.2",
-                                    "resources": {
-                                        "limits": {
-                                            "cpu": "1",
-                                            "memory": "1Gi"
-                                        },
-                                        "requests": {
-                                            "cpu": "1",
-                                            "memory": "1Gi"
-                                        }
-                                    },
-                                    "volumeMounts": [
-                                        {
-                                            "name": "podinfo",
-                                            "mountPath": "/etc/podinfo"
-                                        }
-                                    ]
-                                }
-                            ]
-                        }
-                    }
-                ],
-                "replicas": 1,
-                "engineResources": {},
-                "labels": {
-                    "version": "default"
-                },
-                "svcOrchSpec": {},
-                "traffic": 80,
-                "explainer": {
-                    "containerSpec": {
-                        "name": "",
-                        "resources": {}
-                    }
-                }
-            },
-            {
-                "name": "canary",
-                "graph": {
-                    "name": "bestbuydemo-canary",
-                    "implementation": "SKLEARN_SERVER",
-                    "endpoint": {
+                        "service_port": 9001,
                         "type": "REST"
                     },
                     "modelUri": "gs://seldon-models/sklearn/income/model"
@@ -85,7 +30,8 @@
                         "spec": {
                             "containers": [
                                 {
-                                    "name": "bestbuydemo-canary",
+                                    "name": "bestbuydemo-default",
+                                    "image": "seldonio/sklearnserver_rest:0.2",
                                     "resources": {
                                         "limits": {
                                             "cpu": "1",
@@ -102,12 +48,12 @@
                     }
                 ],
                 "replicas": 1,
-                "annotations": {
-                    "seldon.io/canary": "true"
-                },
                 "engineResources": {},
+                "labels": {
+                    "version": "default"
+                },
                 "svcOrchSpec": {},
-                "traffic": 20,
+                "traffic": 100,
                 "explainer": {
                     "containerSpec": {
                         "name": "",
