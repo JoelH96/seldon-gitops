@@ -1,0 +1,63 @@
+{
+    "kind": "SeldonDeployment",
+    "apiVersion": "machinelearning.seldon.io/v1alpha2",
+    "metadata": {
+        "name": "bestbuydemo",
+        "namespace": "default",
+        "creationTimestamp": null
+    },
+    "spec": {
+        "name": "bestbuydemo",
+        "predictors": [
+            {
+                "name": "default",
+                "graph": {
+                    "name": "bestbuydemo-default",
+                    "implementation": "SKLEARN_SERVER",
+                    "endpoint": {
+                        "type": "REST"
+                    },
+                    "modelUri": "gs://seldon-models/sklearn/income/model"
+                },
+                "componentSpecs": [
+                    {
+                        "metadata": {
+                            "creationTimestamp": "2020-03-13T14:31:24Z"
+                        },
+                        "spec": {
+                            "containers": [
+                                {
+                                    "name": "bestbuydemo-default",
+                                    "resources": {
+                                        "limits": {
+                                            "cpu": "1",
+                                            "memory": "1Gi"
+                                        },
+                                        "requests": {
+                                            "cpu": "1",
+                                            "memory": "1Gi"
+                                        }
+                                    }
+                                }
+                            ]
+                        }
+                    }
+                ],
+                "replicas": 1,
+                "engineResources": {},
+                "svcOrchSpec": {},
+                "traffic": 100,
+                "explainer": {
+                    "containerSpec": {
+                        "name": "",
+                        "resources": {}
+                    }
+                }
+            }
+        ],
+        "annotations": {
+            "seldon.io/engine-seldon-log-messages-externally": "true"
+        }
+    },
+    "status": {}
+}
