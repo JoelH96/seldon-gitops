@@ -59,58 +59,10 @@
                     "version": "default"
                 },
                 "svcOrchSpec": {},
-                "traffic": 80,
+                "traffic": 100,
                 "explainer": {
                     "type": "AnchorTabular",
                     "modelUri": "gs://seldon-models/sklearn/income/explainer",
-                    "containerSpec": {
-                        "name": "",
-                        "resources": {}
-                    }
-                }
-            },
-            {
-                "name": "canary",
-                "graph": {
-                    "name": "income-classifier-canary",
-                    "implementation": "SKLEARN_SERVER",
-                    "endpoint": {
-                        "type": "REST"
-                    },
-                    "modelUri": "gs://seldon-models/sklearn/income/model"
-                },
-                "componentSpecs": [
-                    {
-                        "metadata": {
-                            "creationTimestamp": "2020-04-09T08:32:37Z"
-                        },
-                        "spec": {
-                            "containers": [
-                                {
-                                    "name": "income-classifier-canary",
-                                    "resources": {
-                                        "limits": {
-                                            "cpu": "1",
-                                            "memory": "1Gi"
-                                        },
-                                        "requests": {
-                                            "cpu": "1",
-                                            "memory": "1Gi"
-                                        }
-                                    }
-                                }
-                            ]
-                        }
-                    }
-                ],
-                "replicas": 1,
-                "annotations": {
-                    "seldon.io/canary": "true"
-                },
-                "engineResources": {},
-                "svcOrchSpec": {},
-                "traffic": 20,
-                "explainer": {
                     "containerSpec": {
                         "name": "",
                         "resources": {}
